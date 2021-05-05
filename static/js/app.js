@@ -44,6 +44,10 @@ function init() {
 };
 
 function barTwo () {
+  
+  // get data
+  olympicsData.then(function(response) {
+    
   // bar chart with medals by year
 
   var width = 250
@@ -119,8 +123,6 @@ function barTwo () {
   
   //.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), Object.create(null));
 
-  console.log(result)
-
   // var t = d3.transition()
   //     .duration(2000);
 
@@ -172,7 +174,7 @@ function barTwo () {
   // svg.select('.y.axis')
   //     .transition(t)
   //     .call(y_axis);
-
+  })
 }
 
 

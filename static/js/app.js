@@ -2,7 +2,7 @@
 const url = "/api/olympics";
 
 // olympicsData.then(row => {
-//   console.log("Olympics Data:", row);
+//   console.log(row);
 // });
 
 // Assign d3.json to variable
@@ -10,8 +10,11 @@ var olympicsData = d3.json(url);
 
 // Create reference variables
 var dropdownElement = d3.select("#selYear");
+var yearElement = d3.select("#Year");
+var barChartElement = d3.select("#bar-two");
+var mapElement = d3.select("#map");
 var nocDropdownElement = d3.select("#selNOC");
-var nocElement = d3.select("#Year");
+var polarChartElement = d3.select("#polar-area-chart");
 
 function init() {
 
@@ -19,22 +22,35 @@ function init() {
   olympicsData.then(function(response) {
     console.log("Olympics Data:", response);
 
-    // create Set to avoid duplicates
-    let years = new Set()
+    // create Sets to avoid duplicates
+    let years = new Set();
+    let regions = new Set();
 
+    // Pull out elements for dropdowns
     response.forEach((row) => {
       years.add(row.Year)
+      regions.add(`${row.Region} (${row.NOC})`)
     });
 
-    // create Array to sort 
-    sortedYears = Array.from(years).sort()
+    // create Arrays to sort 
+    var sortedYears = Array.from(years).sort();
+    var sortedRegions = Array.from(regions).sort();
 
-    // populate dropdown element
+    // populate year dropdown element
     sortedYears.forEach(year => {dropdownElement
       .append("option")
       .text(year)
       .property("value", year)
     });
+
+    // populate NOC dropdown element
+    sortedRegions.forEach(row => {nocDropdownElement
+      .append("option")
+      .text(row)
+      .property("value", row)
+    });
+    // console.log(sortedRegions);
+
   })
   
   barTwo();
@@ -115,7 +131,7 @@ function barTwo () {
     }
   });
 
-  console.log(yearFilteredData);
+  console.log("yearFilteredData --->", yearFilteredData);
 
   var result = Array.from(yearFilteredData);
   
@@ -172,8 +188,8 @@ function barTwo () {
   // svg.select('.y.axis')
   //     .transition(t)
   //     .call(y_axis);
-  })
-}
+  });
+};
 
 
 
@@ -193,10 +209,14 @@ function barTwo () {
 
 
 // // Event handler for new selection
-// function optionChanged(nocSelection) {
-//   console.log(`National Olympic Committee: ${nocSelection}`);
-//   buildDashboard(nocSelection);
+// function nocChanged(nocSelection) {
+//   console.log(`National Olympic Committee selection ---> ${nocSelection}`);
+//   buildPolarChart(nocSelection);
 // };
+// nocChanged();
+
+
+
 // Read data from database here and format for front-end plotting
 // function buildDashboard(nocSelection) {
 //   /* data route */
@@ -240,5 +260,55 @@ function barTwo () {
 //   });
 //     // Plotly.newPlot("plot", data, layout);
 // };
+
+function buildPolarChart(nocSelection) {
+
+  // olympicsData.then(data => {
+
+  //   data.forEach({row => {
+  //     if (row.NOC === )row.NOC
+  //     .append()
+  //     };
+  //   };
+
+
+
+    // var selectionData = data.NOC.filter(d => d.NOC === nocSelection)[0];
+    // console.log(`NOC ${selectionData.NOC} selectionData:`, selectionData);
+
+//     var data = {
+//       datasets: [{
+//           data: [
+           
+//           ],
+//           backgroundColor: [
+//               "#FF6384",
+//               "#4BC0C0",
+//               "#FFCE56",
+//               "#E7E9ED",
+//               "#36A2EB"
+//           ],
+//           label: 'My dataset' // for legend
+//       }],
+//       labels: [
+//           "Red",
+//           "Green",
+//           "Yellow",
+//           "Grey",
+//           "Blue"
+//       ]
+//     };
+//     var ctx = $("#myChart");
+//     new Chart(ctx, {
+//       data: data,
+//       type: 'polarArea'
+//     });
+
+  // })
+};
+
+
+
+buildPolarChart();
 
 init();

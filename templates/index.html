@@ -27,15 +27,7 @@
         <p>Use interactive charts below to explore the dataset containing 120 years of Olympic history</p>
       </div>
     </div>
-    <div class="row">
-      <div class="col-md-2">
-        <select id="selNOC" onchange="nocChanged(this.value)"></select>
-      </div>
-      <div class="col-md-10">
-        <canvas id="polar-area-chart"></canvas>
-        <!-- CHART.JS CHART HERE -->
-      </div>
-    </div>
+    
     <div class="row">
       <div class="col-md-2">
         <div class="well">
@@ -52,13 +44,24 @@
       </div>
       <div class="col-md-5">
         <div id="bar-two"></div>
-        <!-- PLOTLY CHART HERE -->
+        <!-- D3 CHART HERE -->
       </div>
       <div class="col-md-5">
         <div id="map"></div>
         <!-- LEAFLET MAP HERE -->
       </div>
     </div>
+
+    <div class="row">
+      <div class="col-md-2">
+        <select id="selNOC" onchange="nocChanged(this.value)"></select>
+      </div>
+      <div class="col-md-10">
+        <canvas id="polar-area-chart"></canvas>
+        <!-- CHART.JS CHART HERE -->
+      </div>
+    </div>
+    
   </div>
 
   <!-- Footer -->

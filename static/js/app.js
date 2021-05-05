@@ -10,6 +10,7 @@ var olympicsData = d3.json(url);
 
 // Create reference variables
 var dropdownElement = d3.select("#selYear");
+var nocDropdownElement = d3.select("#selNOC");
 var nocElement = d3.select("#Year");
 
 function init() {
@@ -22,24 +23,21 @@ function init() {
     let years = new Set()
 
     response.forEach((row) => {
-      years
-      .add(row.Year)
+      years.add(row.Year)
     });
 
     // create Array to sort 
     sortedYears = Array.from(years).sort()
 
     // populate dropdown element
-    sortedYears.forEach(year => {
-      dropdownElement
+    sortedYears.forEach(year => {dropdownElement
       .append("option")
       .text(year)
       .property("value", year)
     });
-
-    barTwo();
-
-})
+  })
+  
+  barTwo();
 
 };
 
@@ -62,7 +60,7 @@ function barTwo () {
     bottom: 70,
     left: 70,
     right: 20
-  }
+  };
 
   var svg = d3.select('bar-two')
     .append('svg')
@@ -99,7 +97,7 @@ function barTwo () {
   // start with selected year
   
   // placeholder variable vs. selection
-  year = 2016
+  var year = 2016;
 
   // REPLACE
   //var csv_data = data[year];
@@ -117,9 +115,9 @@ function barTwo () {
     }
   });
 
-  console.log(yearFilteredData)
+  console.log(yearFilteredData);
 
-  result = Array.from(yearFilteredData)
+  var result = Array.from(yearFilteredData);
   
   //.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), Object.create(null));
 

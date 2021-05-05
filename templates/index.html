@@ -28,9 +28,12 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-12">
-        <div id="bar-one"></div>
-        <!-- NEW JS LIBRARY CHART HERE -->
+      <div class="col-md-2">
+        <select id="selNOC" onchange="nocChanged(this.value)"></select>
+      </div>
+      <div class="col-md-10">
+        <canvas id="polar-area-chart"></canvas>
+        <!-- CHART.JS CHART HERE -->
       </div>
     </div>
     <div class="row">
@@ -73,10 +76,13 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="crossorigin=""></script>
+  <!-- Lodash JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
+  <!-- Canvas JS -->
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js></script>
   <!-- API key -->
   <script type="text/javascript" src="static/js/config.js"></script>
   <!-- Local JS app file -->
-  <!-- <script src="static/js/app.js"></script> -->
   <script src="{{ url_for('static', filename='js/app.js') }}"></script>
   
 </body>

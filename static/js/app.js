@@ -10,8 +10,11 @@ var olympicsData = d3.json(url);
 
 // Create reference variables
 var dropdownElement = d3.select("#selYear");
+var yearElement = d3.select("#Year");
+var barChartElement = d3.select("#bar-two");
+var mapElement = d3.select("#map");
 var nocDropdownElement = d3.select("#selNOC");
-var nocElement = d3.select("#Year");
+var polarChartElement = d3.select("#polar-area-chart");
 
 function init() {
 
@@ -48,7 +51,7 @@ function barTwo () {
     
   // bar chart with medals by year
 
-  var width = 250
+  var width = 500
   // document.getElementById('bar-two')
   //     .clientWidth;
   var height = 250
@@ -62,7 +65,7 @@ function barTwo () {
     right: 20
   };
 
-  var svg = d3.select('bar-two')
+  var svg = barChartElement
     .append('svg')
     .attr('width', width)
     .attr('height', height)
@@ -108,70 +111,83 @@ function barTwo () {
   response.forEach((row) => {
     if (row.Year === year) {
       //console.log(row.Year)
-      yearFilteredData.push({
-        Region: row.Region,
+      yearFilteredData.push(row.Region,
         // Medal: row.Medal
-      })
+      )
     }
   });
 
-  console.log(yearFilteredData);
+  // console.log(yearFilteredData)
 
-  var result = Array.from(yearFilteredData);
-  
-  //.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), Object.create(null));
+  var result = _.countBy(yearFilteredData);
 
-  // var t = d3.transition()
-  //     .duration(2000);
+  // console.log(Object.keys(result))
 
-  // var months = csv_data.map(function(d) {
-  //     return d.month;
-  // });
-  // x_scale.domain(months);
+  console.log(Object.values(result).sort(function(a, b){return b-a}))
 
-  // var max_value = d3.max(csv_data, function(d) {
-  //     return +d.value;
-  // });
+  let medals = {}
+  medals = Object.values(result).sort(function(a, b){
+      return b-a})
 
-  // y_scale.domain([0, max_value]);
-  // colour_scale.domain([0, max_value]);
+  let countries = {}
+  countries = Object.keys(result).sort((a, b) => {
+      return result[b] - result[a] 
+  })
+  ;
 
-  // var bars = svg.selectAll('.bar')
-  //     .data(csv_data)
+  top10MedalCount = medals.slice(0,10)
+  top10CountryCount = countries.slice(0,10)
 
-  // bars
-  //     .exit()
-  //     .remove();
+  console.log(top10CountryCount, top10MedalCount)
 
-  // var new_bars = bars
-  //     .enter()
-  //     .append('rect')
-  //     .attr('class', 'bar')
-  //     .attr('x', function(d) {
-  //         return x_scale(d.month);
-  //     })
-  //     .attr('width', x_scale.bandwidth())
-  //     .attr('y', height)
-  //     .attr('height', 0)
+  var t = d3.transition()
+      .duration(2000);
 
-  // new_bars.merge(bars)
-  //     .transition(t)
-  //     .attr('y', function(d) {
-  //         return y_scale(+d.value);
-  //     })
-  //     .attr('height', function(d) {
-  //         return height - y_scale(+d.value)
-  //     })
-  //     .attr('fill', function(d) {
-  //         return colour_scale(+d.value);
-  //     })
+  x_scale.domain(top10CountryCount);
 
-  // svg.select('.x.axis')
-  //     .call(x_axis);
+  var max_value = d3.max(top10MedalCount);
 
-  // svg.select('.y.axis')
-  //     .transition(t)
-  //     .call(y_axis);
+  console.log(max_value)
+
+  y_scale.domain([0, max_value]);
+  colour_scale.domain([0, max_value]);
+
+  var bars = svg.selectAll('.bar')
+      .data(top10MedalCount)
+
+  bars
+      .exit()
+      .remove();
+
+  var new_bars = bars
+      .enter()
+      .append('rect')
+      .attr('class', 'bar')
+      .attr('x', function(top10CountryCount) {
+          return x_scale(top10CountryCount.length);
+      })
+      .attr('width', x_scale.bandwidth())
+      .attr('y', height)
+      .attr('height', 0)
+
+  new_bars.merge(bars)
+      .transition(t)
+      .attr('y', function(top10MedalCount) {
+          return y_scale(+top10MedalCount);
+      })
+      .attr('height', function(top10MedalCount) {
+          return height - y_scale(+top10MedalCount)
+      })
+      .attr('fill', function(top10MedalCount) {
+          return colour_scale(+top10MedalCount);
+      })
+
+  svg.select('.x.axis')
+      .call(x_axis);
+
+  svg.select('.y.axis')
+      .transition(t)
+      .call(y_axis);
   })
 }
 

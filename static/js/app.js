@@ -101,8 +101,8 @@ var x_scale = d3.scaleBand()
 var y_scale = d3.scaleLinear()
     .range([height, 0]);
 
-var colour_scale = d3.scaleQuantile()
-    .range(["#ffffe5", "#fff7bc", "#fee391", "#fec44f", "#fe9929", "#ec7014", "#cc4c02", "#993404", "#662506"]);
+var colour_scale = d3.scaleSequential().domain([1,10])
+    .interpolator(d3.interpolateRdYlBu);
 
 var y_axis = d3.axisLeft(y_scale);
 var x_axis = d3.axisBottom(x_scale);

@@ -28,8 +28,8 @@ function init() {
 
     // Pull out elements for dropdowns
     response.forEach((row) => {
-      years.add(row.Year)
-      regions.add(`${row.Region} (${row.NOC})`)
+      years.add(row.Year);
+      regions.add(row.Region);
     });
 
     // create Arrays to sort 
@@ -43,7 +43,7 @@ function init() {
       .property("value", year)
     });
 
-    // populate NOC dropdown element
+    // populate NOC region dropdown element
     sortedRegions.forEach(row => {nocDropdownElement
       .append("option")
       .text(row)
@@ -130,67 +130,6 @@ function barTwo () {
     }
   });
 
-<<<<<<< HEAD
-  console.log("yearFilteredData --->", yearFilteredData);
-
-  var result = Array.from(yearFilteredData);
-  
-  //.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), Object.create(null));
-
-  // var t = d3.transition()
-  //     .duration(2000);
-
-  // var months = csv_data.map(function(d) {
-  //     return d.month;
-  // });
-  // x_scale.domain(months);
-
-  // var max_value = d3.max(csv_data, function(d) {
-  //     return +d.value;
-  // });
-
-  // y_scale.domain([0, max_value]);
-  // colour_scale.domain([0, max_value]);
-
-  // var bars = svg.selectAll('.bar')
-  //     .data(csv_data)
-
-  // bars
-  //     .exit()
-  //     .remove();
-
-  // var new_bars = bars
-  //     .enter()
-  //     .append('rect')
-  //     .attr('class', 'bar')
-  //     .attr('x', function(d) {
-  //         return x_scale(d.month);
-  //     })
-  //     .attr('width', x_scale.bandwidth())
-  //     .attr('y', height)
-  //     .attr('height', 0)
-
-  // new_bars.merge(bars)
-  //     .transition(t)
-  //     .attr('y', function(d) {
-  //         return y_scale(+d.value);
-  //     })
-  //     .attr('height', function(d) {
-  //         return height - y_scale(+d.value)
-  //     })
-  //     .attr('fill', function(d) {
-  //         return colour_scale(+d.value);
-  //     })
-
-  // svg.select('.x.axis')
-  //     .call(x_axis);
-
-  // svg.select('.y.axis')
-  //     .transition(t)
-  //     .call(y_axis);
-  });
-};
-=======
   // console.log(yearFilteredData)
 
   var result = _.countBy(yearFilteredData);
@@ -206,8 +145,7 @@ function barTwo () {
   let countries = {}
   countries = Object.keys(result).sort((a, b) => {
       return result[b] - result[a] 
-  })
-  ;
+  });
 
   top10MedalCount = medals.slice(0,10)
   top10CountryCount = countries.slice(0,10)
@@ -264,7 +202,6 @@ function barTwo () {
       .call(y_axis);
   })
 }
->>>>>>> ffb2fe5ccf9bbfc72aec6828413e2d5026dfbd80
 
 
 
@@ -280,7 +217,7 @@ function barTwo () {
 //     buildDashboard(row.NOC[0])
 //     console.log("Default NOC:", row.NOC[0])
 //   });
-// };
+// };                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   UUU
 
 
 // // Event handler for new selection
@@ -336,50 +273,69 @@ function barTwo () {
 //     // Plotly.newPlot("plot", data, layout);
 // };
 
-function buildPolarChart(nocSelection) {
+var nocSelection = "USA"
+function buildPolarChart() {
 
-  // olympicsData.then(data => {
+  // var filteredData = (row) => {
+  //   row.forEach(([key, value]) => {
+  //     data.append("td").text(value)
+  //   })
+  //   console.log(filteredData)
+  // }
 
-  //   data.forEach({row => {
-  //     if (row.NOC === )row.NOC
-  //     .append()
-  //     };
-  //   };
+  // var regionSelection = nocDropdownElement.property("value")
+  // console.log("regionSelection--->", regionSelection)
+
+  regionSelectionArray = [];
+
+  // get data
+  olympicsData.then(function(response) {
+
+    // Pull out elements for dropdowns
+    response.forEach(row => {
+      // var regionFilter = row.Region.filter(d => d.Region == nocSelection)[0];
+      // console.log(row.Region)
+      if (row.Region == nocSelection) {
+        regionSelectionArray.push(row.Medal);
+      }
+      
+    });
+    console.log("regionSelectionArray-->", regionSelectionArray)
+    
+    var medalCountByRegion = _.countBy(regionSelectionArray);
+    console.log("medalCountByRegion-->", medalCountByRegion)
+    
 
 
+    var data = {
+      datasets: [{
+          data: [
+            medalCountByRegion
+          ],
+          backgroundColor: [
+              "#FF6384",
+              "#4BC0C0",
+              "#FFCE56",
+              "#E7E9ED",
+              "#36A2EB"
+          ],
+          label: 'Region Medal Count by year' // for legend
+      }],
+      labels: [
+          "Red",
+          "Green",
+          "Yellow",
+          "Grey",
+          "Blue"
+      ]
+    };
+    var ctx = $("#polar-area-chart");
+    new Chart(ctx, {
+      data: data,
+      type: 'polarArea'
+    });
 
-    // var selectionData = data.NOC.filter(d => d.NOC === nocSelection)[0];
-    // console.log(`NOC ${selectionData.NOC} selectionData:`, selectionData);
-
-//     var data = {
-//       datasets: [{
-//           data: [
-           
-//           ],
-//           backgroundColor: [
-//               "#FF6384",
-//               "#4BC0C0",
-//               "#FFCE56",
-//               "#E7E9ED",
-//               "#36A2EB"
-//           ],
-//           label: 'My dataset' // for legend
-//       }],
-//       labels: [
-//           "Red",
-//           "Green",
-//           "Yellow",
-//           "Grey",
-//           "Blue"
-//       ]
-//     };
-//     var ctx = $("#myChart");
-//     new Chart(ctx, {
-//       data: data,
-//       type: 'polarArea'
-//     });
-
-  // })
+  });
 };
 
 

@@ -36,6 +36,11 @@ class Olympics(db.Model):
     Region = db.Column(db.String(100))
     Medal = db.Column(db.String(20))
     Year = db.Column(db.Integer)
+    Team = db.Column(db.String(100))
+    Season = db.Column(db.String(20))
+    City = db.Column(db.String(100))
+    Sport = db.Column(db.String(250))
+    Event = db.Column(db.String(250))
 
     def __repr__(self):
         return '<Olympics %r>' % (self.name)
@@ -48,7 +53,7 @@ def home():
 # Flask route to query data from SQLite database and output in json format
 @app.route("/api/olympics")
 def olympics():
-    results = db.session.query(Olympics.primary_id, Olympics.NOC, Olympics.Region, Olympics.Medal, Olympics.Year).all()
+    results = db.session.query(Olympics.primary_id, Olympics.NOC, Olympics.Region, Olympics.Medal, Olympics.Year, Olympics.Team, Olympics.Season, Olympics.City, Olympics.Sport, Olympics.Event).all()
 
     olympics_data = []
 
@@ -60,6 +65,11 @@ def olympics():
         dict["Region"] = result[2]
         dict["Medal"] = result[3]
         dict["Year"] = result[4]
+        dict["Team"] = result[5]
+        dict["Season"] = result[6]
+        dict["City"] = result[7]
+        dict["Sport"] = result[8]
+        dict["Event"] = result[9]
         olympics_data.append(dict)
 
     # Loop through query results and assign variables to each series

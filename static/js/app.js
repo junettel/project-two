@@ -1,6 +1,7 @@
 // Data file path
 const url = "/api/olympics";
 
+// test data read as needed
 // olympicsData.then(row => {
 //   console.log(row);
 // });
@@ -26,11 +27,14 @@ function init() {
     let years = new Set();
     let regions = new Set();
 
+    console.log(filterYear)
+
     // Pull out elements for dropdowns
     response.forEach((row) => {
       years.add(row.Year)
       regions.add(`${row.Region} (${row.NOC})`)
     });
+
 
     // create Arrays to sort 
     var sortedYears = Array.from(years).sort();
@@ -51,147 +55,81 @@ function init() {
     });
     // console.log(sortedRegions);
 
+    var filterYear = sortedYears[0]
+
+  barTwo(filterYear);
+
   })
-  
-  barTwo();
 
 };
 
-function barTwo () {
+// year event handler
+function yearChanged() { 
+
+  var filterYear = parseInt(d3.select("#selYear").node().value);
+  
+  barTwo(filterYear)
+
+}
+
+// bar two variables and set up 
+
+var width = 750
+var height = 250
+
+var margin = {
+  top: 10,
+  bottom: 70,
+  left: 70,
+  right: 20
+};
+
+var svg = barChartElement
+  .append('svg')
+  .attr('width', width)
+  .attr('height', height)
+  .append('g')
+  .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')');
+
+width = width - margin.left - margin.right;
+height = height - margin.top - margin.bottom;
+
+var x_scale = d3.scaleBand()
+    .rangeRound([0, width])
+    .padding(0.1);
+
+var y_scale = d3.scaleLinear()
+    .range([height, 0]);
+
+var colour_scale = d3.scaleQuantile()
+    .range(["#ffffe5", "#fff7bc", "#fee391", "#fec44f", "#fe9929", "#ec7014", "#cc4c02", "#993404", "#662506"]);
+
+var y_axis = d3.axisLeft(y_scale);
+var x_axis = d3.axisBottom(x_scale);
+
+svg.append('g')
+    .attr('class', 'x axis')
+    .attr('transform', 'translate(0,' + height + ')');
+
+svg.append('g')
+    .attr('class', 'y axis');
+
+function barTwo (filterYear) {
   
   // get data
   olympicsData.then(function(response) {
     
-  // bar chart with medals by year
-
-  var width = 500
-  // document.getElementById('bar-two')
-  //     .clientWidth;
-  var height = 250
-  // document.getElementById('bar-two')
-  //     .clientHeight;
-
-  var margin = {
-    top: 10,
-    bottom: 70,
-    left: 70,
-    right: 20
-  };
-
-  var svg = barChartElement
-    .append('svg')
-    .attr('width', width)
-    .attr('height', height)
-    .append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')');
-
-  width = width - margin.left - margin.right;
-  height = height - margin.top - margin.bottom;
-
-  var data = {};
-
-  var x_scale = d3.scaleBand()
-      .rangeRound([0, width])
-      .padding(0.1);
-
-  var y_scale = d3.scaleLinear()
-      .range([height, 0]);
-
-  var colour_scale = d3.scaleQuantile()
-      .range(["#ffffe5", "#fff7bc", "#fee391", "#fec44f", "#fe9929", "#ec7014", "#cc4c02", "#993404", "#662506"]);
-
-  var y_axis = d3.axisLeft(y_scale);
-  var x_axis = d3.axisBottom(x_scale);
-
-  svg.append('g')
-      .attr('class', 'x axis')
-      .attr('transform', 'translate(0,' + height + ')');
-
-  svg.append('g')
-      .attr('class', 'y axis');
-
-  // start with selected year
-  
-  // placeholder variable vs. selection
-  var year = 2016;
-
-  // REPLACE
-  //var csv_data = data[year];
-  //
-
   yearFilteredData = [];
 
   response.forEach((row) => {
-    if (row.Year === year) {
-      //console.log(row.Year)
+    if (row.Year === filterYear) {
+      console.log("1",filterYear)
       yearFilteredData.push(row.Region,
-        // Medal: row.Medal
       )
     }
   });
 
-<<<<<<< HEAD
-  console.log("yearFilteredData --->", yearFilteredData);
-
-  var result = Array.from(yearFilteredData);
-  
-  //.reduce((a, c) => (a[c] = (a[c] || 0) + 1, a), Object.create(null));
-
-  // var t = d3.transition()
-  //     .duration(2000);
-
-  // var months = csv_data.map(function(d) {
-  //     return d.month;
-  // });
-  // x_scale.domain(months);
-
-  // var max_value = d3.max(csv_data, function(d) {
-  //     return +d.value;
-  // });
-
-  // y_scale.domain([0, max_value]);
-  // colour_scale.domain([0, max_value]);
-
-  // var bars = svg.selectAll('.bar')
-  //     .data(csv_data)
-
-  // bars
-  //     .exit()
-  //     .remove();
-
-  // var new_bars = bars
-  //     .enter()
-  //     .append('rect')
-  //     .attr('class', 'bar')
-  //     .attr('x', function(d) {
-  //         return x_scale(d.month);
-  //     })
-  //     .attr('width', x_scale.bandwidth())
-  //     .attr('y', height)
-  //     .attr('height', 0)
-
-  // new_bars.merge(bars)
-  //     .transition(t)
-  //     .attr('y', function(d) {
-  //         return y_scale(+d.value);
-  //     })
-  //     .attr('height', function(d) {
-  //         return height - y_scale(+d.value)
-  //     })
-  //     .attr('fill', function(d) {
-  //         return colour_scale(+d.value);
-  //     })
-
-  // svg.select('.x.axis')
-  //     .call(x_axis);
-
-  // svg.select('.y.axis')
-  //     .transition(t)
-  //     .call(y_axis);
-  });
-};
-=======
-  // console.log(yearFilteredData)
+  console.log("3",filterYear)
 
   var result = _.countBy(yearFilteredData);
 
@@ -211,8 +149,6 @@ function barTwo () {
 
   top10MedalCount = medals.slice(0,10)
   top10CountryCount = countries.slice(0,10)
-
-  console.log(top10CountryCount, top10MedalCount)
 
   var t = d3.transition()
       .duration(2000);
@@ -237,8 +173,8 @@ function barTwo () {
       .enter()
       .append('rect')
       .attr('class', 'bar')
-      .attr('x', function(top10CountryCount) {
-          return x_scale(top10CountryCount.length);
+      .attr('x', function(d,i) {
+          return x_scale(top10CountryCount[i])
       })
       .attr('width', x_scale.bandwidth())
       .attr('y', height)
@@ -264,10 +200,6 @@ function barTwo () {
       .call(y_axis);
   })
 }
->>>>>>> ffb2fe5ccf9bbfc72aec6828413e2d5026dfbd80
-
-
-
 
   
 //   // Default plot

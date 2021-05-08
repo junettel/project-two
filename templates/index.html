@@ -12,10 +12,9 @@
     crossorigin="">
   <!-- Bootstrap CSS stylesheet -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-  <!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous"> -->
-  <!-- Local CSS stylesheet -->
+  <!-- Local CSS stylesheets -->
   <link rel="stylesheet" href="static/css/style.css">
-  <!-- <link rel="stylesheet" href="assets/css/d3Style.css"> -->
+  <link rel="stylesheet" href="static/css/d3Style.css">
 </head>
 
 <body>
@@ -36,20 +35,20 @@
         </div>
         <div class="panel panel-primary">
           <div class="panel-heading">
-            <h3 class="panel-title">Metadata</h3>
+            <h3 class="panel-title">Host City & Season</h3>
           </div>
           <div id="Year" class="panel-body"></div>
           <!-- NOC REGION DATA -->
         </div>
       </div>
-      <div class="col-md-5">
+      <div class="col-md-10">
         <div id="bar-two"></div>
         <!-- D3 CHART HERE -->
       </div>
-      <div class="col-md-5">
-        <div id="map"></div>
-        <!-- LEAFLET MAP HERE -->
-      </div>
+      <!-- <div class="col-md-5"> -->
+        <!-- <div id="plot"></div> -->
+        <!-- PLOTLY CHART HERE -->
+      <!-- </div> -->
     </div>
 
     <div class="row">
@@ -79,13 +78,13 @@
   <!-- Bootstrap JS -->
   <!-- <script src="https://stackpsath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script> -->
   <!-- D3-tip -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-tip/0.9.1/d3-tip.min.js"></script>
   <!-- Leaflet JS -->
   <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js" integrity="sha512-gZwIG9x3wUXg2hdXF6+rVkLF/0Vi9U8D2Ntg4Ga5I5BZpVkVxlJWbSQtXPSiUTtC0TjtGOmxa1AJPuV0CPthew=="crossorigin=""></script>
   <!-- Lodash JS -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.11/lodash.min.js"></script>
-  <!-- Canvas JS -->
-  <script src=https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.2.0/chart.min.js></script>
+  <!-- Chart JS -->
+  <script src=https://cdn.jsdelivr.net/npm/chart.js@3.2.1/dist/chart.min.js></script>
   <!-- API key -->
   <script type="text/javascript" src="static/js/config.js"></script>
   <!-- Local JS app file -->

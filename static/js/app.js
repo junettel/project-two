@@ -93,6 +93,7 @@ function yearChanged() {
   console.log("filterRegion year change -->", filterRegion);
   
   barTwo(filterYear);
+  buildPolarChart(filterRegion, filterYear);
   
 };
 
@@ -408,8 +409,7 @@ function buildPolarChart(filterRegion, filterYear) {
 
 
     // on regionChanged()
-    
-    // var selectionMetadata = 
+  
     
     
 

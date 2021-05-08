@@ -372,7 +372,16 @@ function buildPolarChart(filterRegion, filterYear) {
       segmentStrokeColor: "#000000",
       animateScale: true,
       easeInQuint: true,
-      padding: 20
+      padding: 20,
+      plugins: {
+        title: {
+          display: true,
+          text: `Distribution of Medals Won:  ${filterRegion}`
+        },
+        // legend: {
+        //   position: 'right'
+        // }
+      }
     }
 
     // console.log("polarChart labels --->", mData.labels);

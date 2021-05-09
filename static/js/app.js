@@ -15,9 +15,9 @@ const yearElement = d3.select("#Year");
 const barChartElement = d3.select("#bar-two");
 const plotElement = d3.select("#plot");
 const nocDropdownElement = d3.select("#selNOC");
-const ctx = document.getElementById("polar-area-chart");
-// const polarChartElement = d3.select("#polar-area-chart");
-// console.log(polarChartElement);
+const polarChartElement = d3.select("#polar-area-chart");
+var ctx = document.getElementById("polar-area-chart");
+var context = ctx.getContext("2d");
 
 
 // #########################################
@@ -65,11 +65,13 @@ function init() {
     console.log("Default Year:", filterYear);
 
     // Set default region
-    var filterRegion = sortedRegions[0];
+    // var filterRegion = sortedRegions[0];
+    var filterRegion = "USA";
     console.log("Default Region:", filterRegion);
     
     // Default charts
     barTwo(filterYear);
+    getMetadata(filterRegion, filterYear);
     buildPolarChart(filterRegion, filterYear);
 
   });
@@ -91,31 +93,46 @@ function yearChanged() {
   var filterRegion = nocDropdownElement.node().value;
   console.log("filterYear year change -->", filterYear);
   console.log("filterRegion year change -->", filterRegion);
+
+  
   
   barTwo(filterYear);
+  getMetadata(filterRegion, filterYear);
   buildPolarChart(filterRegion, filterYear);
   
 };
 
 // Region change event handler
 function regionChanged() {
-  
+
   var filterYear = parseInt(dropdownElement.node().value);
   var filterRegion = nocDropdownElement.node().value;
   console.log("filterYear region change -->", filterYear);
   console.log("filterRegion region change -->", filterRegion);
 
+  // pChart.destroy();
+  // pChart.destroy && pChart.destroy()
+  
+  // d3.select(".col-md-8")
+  //   .append("canvas")
+  //   .attr("id", "new-polar-area-chart")
 
+  // if (pChart) {
+  //   pChart.destroy && pChart.destroy()
+  // }
+  
+  getMetadata(filterRegion, filterYear);
   buildPolarChart(filterRegion, filterYear);
   
 };
+
 
 // #########################################
 // D3 Bar Chart
 // #########################################
 
 // bar two variables and set up 
-var width = 800;
+var width = 875;
 var height = 400;
 
 var margin = {
@@ -284,21 +301,58 @@ function barTwo (filterYear) {
 
 
 // #########################################
+// Metadata Panel - Host City & Season
+// #########################################
+
+function getMetadata(filterRegion, filterYear, ctx) {
+
+  var filterYear = parseInt(dropdownElement.node().value);
+
+  // Default region selection
+  var filterRegion = "USA";
+  // var filterRegion = nocDropdownElement.node().value;
+
+  var metadataArray = [];
+
+  olympicsData.then(function(response) {
+
+    // Pull out elements for dropdowns
+    response.forEach(row => {
+      // console.log("row.Region -->", row.Region);
+      // console.log("row.Year -->", row.Year);
+      if (row.Region == filterRegion && row.Year == filterYear) {
+        metadataArray.push(row);
+      };
+    });
+
+    console.log(`${filterYear} ${filterRegion} metadataArray`, metadataArray);
+
+    // Clear existing html data
+    yearElement.html("");
+
+    var metaElementArray = [metadataArray[0].City, metadataArray[0].Season];
+    console.log("metaElementArray", metaElementArray);
+
+    // Add host city and season to panel
+      yearElement
+        .append("p")
+        .text(metaElementArray[0])
+      yearElement
+        .append("p")
+        .text(metaElementArray[1])
+
+  });
+};
+
+
+// #########################################
 // Polar area chart
 // #########################################
 
 function buildPolarChart(filterRegion, filterYear) {
-  // Default year and region
-  var filterYear = parseInt(dropdownElement.node().value); // Must be defined within function for parsed integer
-  // var filterRegion = nocDropdownElement.node().value;
-  var filterRegion = "USA";
-
-  // var regionSelection = nocDropdownElement.property("value");
-  // console.log("regionSelection--->", regionSelection);
 
   // Create empty array to hold all medals for selected region
   var regionSelectionArray = [];
-  var metadataArray = [];
 
   // Get data
   olympicsData.then(function(response) {
@@ -309,28 +363,8 @@ function buildPolarChart(filterRegion, filterYear) {
       // console.log("row.Year -->", row.Year);
       if (row.Region === filterRegion && row.Year === filterYear) {
         regionSelectionArray.push(row.Medal);
-        metadataArray.push(row);
       };
     });
-
-    console.log("metadataArray", metadataArray);
-
-    // Clear existing html data
-    yearElement.html("");
-
-    var metaElementArray = [metadataArray[0].City, metadataArray[0].Season];
-    // console.log(metaElementArray)
-
-      yearElement
-        .append("p")
-        .text(`${metaElementArray[0]}`)
-        .append("p")
-        .text(`${metaElementArray[1]}`)
-  
-
-    // console.log("regionSelectionArray USA test-->", regionSelectionArray);
-    // console.log("filterYear--->", filterYear);
-    // console.log("filterRegion && filterYear -->", `${filterYear} ${filterRegion}`);
 
     // Use lodash JS library to provide total medal counts for selected region in key value pairs
     var medalCountByRegion = _.countBy(regionSelectionArray);
@@ -352,7 +386,6 @@ function buildPolarChart(filterRegion, filterYear) {
           medalCountValues[0], 
           medalCountValues[2]
         ],
-        label: 'Medals Won 1896 - 2016',
         backgroundColor: [
           '#D4AF37', // Gold
           '#C0C0C0', // Silver
@@ -360,9 +393,9 @@ function buildPolarChart(filterRegion, filterYear) {
         ]
       }],
       labels: [
-        medalCountKeys[1],
-        medalCountKeys[0],
-        medalCountKeys[2]
+        "Gold",
+        "Silver",
+        "Bronze"
       ]
       
     };
@@ -372,59 +405,55 @@ function buildPolarChart(filterRegion, filterYear) {
       segmentStrokeColor: "#000000",
       animateScale: true,
       easeInQuint: true,
-      padding: 20,
+      layout: {
+        padding: 50
+      },
       plugins: {
         title: {
           display: true,
-          text: `Distribution of Medals Won:  ${filterRegion}`
+          text: `Distribution of Medals Won: ${filterYear} ${filterRegion}`,
+          padding: {
+            bottom: 50
+          }
         },
-        // legend: {
-        //   position: 'right'
-        // }
+        legend: {
+          labels: {
+            font: {
+              size: 12
+            }
+          }
+        }
       }
-    }
+    };
 
     // console.log("polarChart labels --->", mData.labels);
     // console.log("polarChart data --->", mData.datasets);
 
 
+    // Canvas element cannot be updated or destroyed causing issues with event handler
+    // Remove canvas element
+    var node = document.getElementById("polar-area-chart");
+    if (node.parentNode) {
+      node.parentNode.removeChild(node);
+    }
+    
+    // Create new canvas element
+    var ctx = document.createElement('canvas');
+    ctx.id = 'polar-area-chart';
+    document.getElementById("canvas-container").appendChild(ctx);
+
+
+    // CREATE POLAR AREA CHART
     var pChart = new Chart(ctx, {
       type: "polarArea",
       data: mData,
       options: mOptions
     });
-  
-    // pChart.destroy();
-    // console.log(pChart)
-
-    // if(window.pChart === "")
-    // {
-    //   var pChart = new Chart(ctx, {
-    //     type: "polarArea",
-    //     data: mData,
-    //     options: mOptions
-    //   });
-    // }
-    // else
-    // {
-    //   pChart.destroy();
-    //   var pChart = new Chart(ctx, {
-    //     type: "polarArea",
-    //     data: mData,
-    //     options: mOptions
-    //   });
-    // }
-    
-
-
-    // on regionChanged()
-  
     
     
-
-
-
-
+    // window.charts = window.charts || [];
+    // window.charts.push(pChart);
+    // console.log("window.charts", window.charts);
 
 
   });

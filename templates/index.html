@@ -14,7 +14,6 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <!-- Local CSS stylesheets -->
   <link rel="stylesheet" href="static/css/style.css">
-  <link rel="stylesheet" href="static/css/d3Style.css">
 </head>
 
 <body>
@@ -26,9 +25,10 @@
         <p>Use interactive charts below to explore the dataset containing 120 years of Olympic history</p>
       </div>
     </div>
-    
+    <br>
     <div class="row">
-      <div class="col-md-2">
+      <div class="col-md-3">
+        <br>
         <div class="well">
           <h5>Year Picker</h5>
           <select id="selYear" onchange="yearChanged(this.value)"></select>
@@ -38,10 +38,10 @@
             <h3 class="panel-title">Host City & Season</h3>
           </div>
           <div id="Year" class="panel-body"></div>
-          <!-- NOC REGION DATA -->
+          <!-- METADATA DISPLAY -->
         </div>
       </div>
-      <div class="col-md-10">
+      <div class="col-md-9">
         <div id="bar-two"></div>
         <!-- D3 CHART HERE -->
       </div>
@@ -50,21 +50,22 @@
         <!-- PLOTLY CHART HERE -->
       <!-- </div> -->
     </div>
-
     <div class="row">
-      <div class="col-md-4">
+      <div class="col-md-3">
         <div class="well">
           <h5>Region Picker</h5>
           <select id="selNOC" onchange="regionChanged(this.value)"></select>
         </div>
         </div>
-      <div class="col-md-8">
-        <canvas id="polar-area-chart"></canvas>
+      <div class="col-md-9">
+        <div id="canvas-container"></div>
+            <canvas id="polar-area-chart" width="400" height="400" aria-label="polar-area-chart" role="img"></canvas>
         <!-- CHART.JS CHART HERE -->
+        </div>
       </div>
     </div>
-
   </div>
+  <br>
 
   <!-- Footer -->
   <div id="footer">

@@ -17,7 +17,6 @@ const plotElement = d3.select("#plot");
 const nocDropdownElement = d3.select("#selNOC");
 const polarChartElement = d3.select("#polar-area-chart");
 var ctx = document.getElementById("polar-area-chart");
-var context = ctx.getContext("2d");
 
 
 // #########################################
@@ -91,8 +90,8 @@ function yearChanged() {
   // Create variable for year dropdown value
   var filterYear = parseInt(dropdownElement.node().value);
   var filterRegion = nocDropdownElement.node().value;
-  console.log("filterYear year change -->", filterYear);
-  console.log("filterRegion year change -->", filterRegion);
+  // console.log("filterYear year change -->", filterYear);
+  // console.log("filterRegion year change -->", filterRegion);
 
   
   
@@ -107,8 +106,8 @@ function regionChanged() {
 
   var filterYear = parseInt(dropdownElement.node().value);
   var filterRegion = nocDropdownElement.node().value;
-  console.log("filterYear region change -->", filterYear);
-  console.log("filterRegion region change -->", filterRegion);
+  // console.log("filterYear region change -->", filterYear);
+  // console.log("filterRegion region change -->", filterRegion);
 
   // pChart.destroy();
   // pChart.destroy && pChart.destroy()
@@ -325,13 +324,13 @@ function getMetadata(filterRegion, filterYear, ctx) {
       };
     });
 
-    console.log(`${filterYear} ${filterRegion} metadataArray`, metadataArray);
+    // console.log(`${filterYear} ${filterRegion} metadataArray`, metadataArray);
 
     // Clear existing html data
     yearElement.html("");
 
     var metaElementArray = [metadataArray[0].City, metadataArray[0].Season];
-    console.log("metaElementArray", metaElementArray);
+    // console.log("metaElementArray", metaElementArray);
 
     // Add host city and season to panel
       yearElement
@@ -413,7 +412,7 @@ function buildPolarChart(filterRegion, filterYear) {
           display: true,
           text: `Distribution of Medals Won: ${filterYear} ${filterRegion}`,
           padding: {
-            bottom: 50
+            bottom: 20
           }
         },
         legend: {
